@@ -7,6 +7,10 @@
 #include <signal.h>
 #endif
 
+#ifdef ANDROID 
+  #include <bthread.h> 
+#endif
+
 SEXP cli_pkgenv = 0;
 pthread_t tick_thread = { 0 };
 volatile int cli__timer_flag = 1;
@@ -147,7 +151,3 @@ SEXP clic_tick_resume(SEXP state) {
   cli__reset = 1;
   return R_NilValue;
 }
-
-#ifdef ANDROID 
-  #include <bthread.h> 
-#endif
