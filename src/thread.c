@@ -29,9 +29,15 @@ void* clic_thread_func(void *arg) {
   if (ret) return NULL;
 #endif
 
-  int old;
-  pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &old);
-
+  //int old;
+  //pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &old);
+#ifndef __ANDROID__
+	// that's the default, but just in case...
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	// we want cancellation to take effect immediately if possible, instead of waiting for a cancellation point (which is the default)
+	pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+#endif
+	
   while (1) {
     /* TODO: handle signals */
     nanosleep(&cli__tick_ts, NULL);
